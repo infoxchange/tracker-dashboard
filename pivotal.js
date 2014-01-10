@@ -70,8 +70,8 @@ function by_key(key) {
 }
 
 
-// Array.prototype.sum = function(key) {
-//     return this.reduce(function(total, e) {
-//         return total + key(e);
-//     }, 0);
-// };
+Array.prototype.sum = function(key) {
+    return this.reduce(function(total, e) {
+        return total + key(e);
+    }, 0);
+};

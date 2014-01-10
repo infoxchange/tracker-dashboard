@@ -68,21 +68,28 @@ PivotalProject.prototype = {
  * An iteration in Pivotal Tracker.
  */
 function PivotalIteration(d) {
+    this.start = new Date(d.start);
+    this.finish = new Date(d.finish);
     this.stories = d.stories;
+
+    this.total_points = this.stories.sum(function(e) {
+        return e.estimate || 0;
+    });
 }
 
 PivotalIteration.prototype = {
     /**
      * get_progress:
      *
-     * get the current points completed of the iteration.
+     * get the current points completed of the iteration sorted by date
      */
     get_progress: function() {
+        var self = this;
         var points = {};
 
         /* filter the objects to only consider accepted objects.
          * Count the points by accepted date */
-        this.stories
+        self.stories
             .filter(function(e) {
                 return e.current_state === 'accepted' &&
                        e.estimate !== undefined;
@@ -94,7 +101,7 @@ PivotalIteration.prototype = {
             });
 
         /* filter to consider delivered objects */
-        // this.stories
+        // self.stories
         //     .filter(function(e) {
         //         return e.current_state === 'delivered' &&
         //                e.estimate !== undefined;
@@ -102,6 +109,25 @@ PivotalIteration.prototype = {
         //         console.log(e);
         //     });
 
-        return points;
+        var today = new Date();
+        var accepted = 0;
+        var progress = []
+
+        for (var date = self.start;
+             date <= today;
+             date.setDate(date.getDate() + 1)) {
+
+            try {
+                accepted += points[date.toDateString()].accepted;
+            } catch (e) {
+            }
+
+            progress.push({
+                date: date,
+                accepted: accepted
+            });
+        }
+
+        return progress;
     },
 }

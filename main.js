@@ -14,6 +14,28 @@ pivotal.get_projects()
         project.get_current_iteration()
             .done(function(iteration) {
                 var progress = iteration.get_progress();
+
+                console.log(progress);
+
+                $('#burnup-graph').highcharts({
+                    chart: { type: 'area' },
+                    title: { text: "Iteration Burnup" },
+                    xAxis: {
+                        type: 'datetime',
+                        title: { text: "Date" }
+                    },
+                    yAxis: {
+                        title: { text: "Points" }
+                    },
+                    series: [
+                        {
+                            name: "Progress",
+                            data: progress.map(function(e) {
+                                return [e.date, e.accepted];
+                            })
+                        }
+                    ]
+                });
             });
 
         project.get_next_release()
