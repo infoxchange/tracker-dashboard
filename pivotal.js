@@ -12,59 +12,55 @@ function Pivotal() {
 }
 
 Pivotal.prototype = {
-    get_projects: function(template, target) {
+    /**
+     * get_projects:
+     *
+     * Retrieve the list of projects from Pivotal Tracker.
+     *
+     * Returns: a dictionary of project names to PivotalProject objects
+     */
+    get_projects: function() {
+        var self = this;
+
+        var defer = $.Deferred();
 
         $.getJSON('/projects',
                   { fields: 'name,current_velocity' })
             .done(function(d) {
-                $.each(d, function() {
-                    var project = $(this);
+                var projects = {};
 
-                    var context = {};
-                    context['project_name'] = this.name
-                    context['project_velocity'] = this.current_velocity;
+                d.forEach(function(e) {
+                    var p = new PivotalProject(e);
 
-                    $.when(
-                        /* retrieve the current iteration for this project */
-                        $.getJSON('/projects/' + this.id + '/iterations',
-                                  {
-                                      limit: 1,
-                                      fields: 'stories,start,finish'
-                                  })
-                            .done(function(d) {
-                                // pass
-                            }),
-
-                        /* retrieve the next release for this project */
-                        $.getJSON('/projects/' + this.id + '/stories',
-                                  {
-                                      limit: 1,
-                                      filter: 'type:release state:unstarted'
-                                  })
-                            .done(function(d) {
-                                var d = d[0];
-
-                                console.log("Done");
-                                console.log(d);
-                                context['release_name'] = d.name || d.description;
-                                context['release_date_sched'] = d.deadline;
-                                console.log(context);
-                            }))
-
-                        .done(function() {
-                            console.log(context);
-                            target.append(template(context))
-                        })
-                        .fail(function() {
-                            // FIXME: report
-                            console.log("Failed to retrieve project",
-                                        project.name);
-                        });
+                    projects[p.name] = p;
                 });
+
+                defer.resolve(projects);
             })
             .fail(function() {
                 // FIXME: report
-                console.log("Failed to retrieve project list");
+                defer.reject();
             });
+
+        return defer;
     }
 }
+
+
+function by_key(key) {
+    return function(a, b) {
+        if (a[key] < b[key])
+            return -1;
+        else if (b[key] < a[key])
+            return 1;
+        else
+            return 0;
+    }
+}
+
+
+// Array.prototype.sum = function(key) {
+//     return this.reduce(function(total, e) {
+//         return total + key(e);
+//     }, 0);
+// };
