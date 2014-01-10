@@ -52,8 +52,33 @@ PivotalIteration.prototype = {
     /**
      * get_progress:
      *
-     * get the current projects of the iteration.
+     * get the current points completed of the iteration.
      */
     get_progress: function() {
+        var points = {};
+
+        /* filter the objects to only consider accepted objects.
+         * Count the points by accepted date */
+        this.stories
+            .filter(function(e) {
+                return e.current_state === 'accepted' &&
+                       e.estimate !== undefined;
+            }).forEach(function(e) {
+                var date = new Date(e.accepted_at).toDateString();
+
+                points[date] = points[date] || { accepted: 0 };
+                points[date].accepted += e.estimate;
+            });
+
+        /* filter to consider delivered objects */
+        // this.stories
+        //     .filter(function(e) {
+        //         return e.current_state === 'delivered' &&
+        //                e.estimate !== undefined;
+        //     }).forEach(function(e) {
+        //         console.log(e);
+        //     });
+
+        return points;
     },
 }

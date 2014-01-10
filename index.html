@@ -76,7 +76,7 @@ pivotal.get_projects()
 
         project.get_current_iteration()
             .done(function(iteration) {
-                console.log(iteration);
+                console.log(iteration.get_progress());
             });
     });
   </script>
