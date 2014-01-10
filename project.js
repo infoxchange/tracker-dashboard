@@ -112,9 +112,13 @@ PivotalIteration.prototype = {
         //         console.log(e);
         //     });
 
-        var accepted = 0;
+        /* add today if it's not present */
+        var today = new Date().toDateString();
+        points[today] = points[today] || { accepted: 0 };
 
-        return Object.keys(points).map(function(k) {
+        /* rearrange to be sorted by date */
+        var accepted = 0;
+        var progress = Object.keys(points).map(function(k) {
             accepted += points[k].accepted;
 
             return {
@@ -122,5 +126,8 @@ PivotalIteration.prototype = {
                 accepted: accepted
             };
         });
+
+
+        return progress;
     },
 }
