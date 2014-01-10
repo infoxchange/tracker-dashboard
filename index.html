@@ -39,20 +39,20 @@ body {
 
   <script id="project-template" type="text/x-handlebars-template">
     <div class="container">
-      <h1 id="project.name">{{ project_name }}</h1>
+      <h1 id="project.name">{{ name }}</h1>
       <div class="row">
         <div class="col-md-3">
           <div class="as_block">
             <h4>Current Velocity:</h4>
-            <h1 class="centered">{{ project_velocity }}</h1>
+            <h1 class="centered">{{ velocity }}</h1>
           </div>
           <div class="as_block">
             <h4>Next Release</h4>
-            <h3 class="centered">{{ release_name }}</h3>
+            <h3 id="release-name" class="centered"></h3>
             <h4>Scheduled</h4>
-            <h3 class="centered">{{ release_date_sched }}</h3>
+            <h3 id="release-scheduled" class="centered"></h3>
             <h4>Estimated</h4>
-            <h3 class="centered">{{ release_date_est }}</h3>
+            <h3 id="release-estimated" class="centered"></h3>
           </div>
         </div>
         <div class="col-md-9 as_block">
@@ -64,20 +64,5 @@ body {
   <body>
   </body>
 
-  <script type="text/javascript">
-var source = $('#project-template').html();
-var template = Handlebars.compile(source);
-
-var pivotal = new Pivotal();
-
-pivotal.get_projects()
-    .done(function(projects) {
-        var project = projects['HSNet'];
-
-        project.get_current_iteration()
-            .done(function(iteration) {
-                console.log(iteration.get_progress());
-            });
-    });
-  </script>
+  <script type="text/javascript" src="main.js"></script>
 </html>

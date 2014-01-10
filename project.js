@@ -28,7 +28,32 @@ PivotalProject.prototype = {
                   })
             .done(function(d) {
                 defer.resolve(new PivotalIteration(d[0]));
-            })
+            });
+
+        return defer;
+    },
+
+    get_next_release: function() {
+        var self = this;
+        var defer = $.Deferred();
+
+        $.getJSON('/projects/' + self.id + '/stories',
+                  {
+                      filter: 'type:release',
+                      limit: 1
+                  })
+            .done(function(d) {
+                d = d[0];
+
+                console.log(d);
+
+                var release = {
+                    name: d.name,
+                    scheduled: new Date(d.deadline)
+                };
+
+                defer.resolve(release);
+            });
 
         return defer;
     },

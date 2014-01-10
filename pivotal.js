@@ -41,10 +41,6 @@ Pivotal.prototype = {
                 });
 
                 defer.resolve(projects);
-            })
-            .fail(function() {
-                // FIXME: report
-                defer.reject();
             });
 
         return defer;
