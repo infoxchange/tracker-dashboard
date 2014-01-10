@@ -48,6 +48,16 @@ Pivotal.prototype = {
 }
 
 
+function build_url(url, obj) {
+    var vars = url.match(/{[\w_]+}/g);
+
+    return vars.reduce(function(u, d) {
+        var attr = d.slice(1, -1);
+        return u.replace(d, obj[attr]);
+    }, url);
+}
+
+
 function by_key(key) {
     return function(a, b) {
         if (a[key] < b[key])

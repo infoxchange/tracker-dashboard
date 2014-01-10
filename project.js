@@ -21,7 +21,7 @@ PivotalProject.prototype = {
         var self = this;
         var defer = $.Deferred();
 
-        $.getJSON('/projects/' + self.id + '/iterations',
+        $.getJSON(build_url('/projects/{id}/iterations', self),
                   {
                       scope: 'current',
                       fields: 'start,finish,stories'
@@ -37,15 +37,13 @@ PivotalProject.prototype = {
         var self = this;
         var defer = $.Deferred();
 
-        $.getJSON('/projects/' + self.id + '/stories',
+        $.getJSON(build_url('/projects/{id}/stories', self),
                   {
                       filter: 'type:release',
                       limit: 1
                   })
             .done(function(d) {
                 d = d[0];
-
-                console.log(d);
 
                 var release = {
                     name: d.name,
