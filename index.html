@@ -72,9 +72,12 @@ var pivotal = new Pivotal();
 
 pivotal.get_projects()
     .done(function(projects) {
-        console.log(projects);
+        var project = projects['HSNet'];
 
-
+        project.get_current_iteration()
+            .done(function(iteration) {
+                console.log(iteration);
+            });
     });
   </script>
 </html>

@@ -1,5 +1,10 @@
 'use strict';
 
+/**
+ * new Pivotal:
+ *
+ * Control class for talking to Pivotal Tracker.
+ */
 function Pivotal() {
     $.ajaxPrefilter(function(opts, old, xhr) {
         /* URL endpoint */
