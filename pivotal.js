@@ -70,6 +70,13 @@ function by_key(key) {
 }
 
 
+function fix_date(d) {
+    return Date.UTC(d.getFullYear(),
+                    d.getMonth(),
+                    d.getDate())
+}
+
+
 Array.prototype.sum = function(key) {
     return this.reduce(function(total, e) {
         return total + key(e);

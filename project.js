@@ -72,6 +72,9 @@ function PivotalIteration(d) {
     this.finish = new Date(d.finish);
     this.stories = d.stories;
 
+    /* fix the start date */
+    this.start.setDate(this.start.getDate() + 1);
+
     this.total_points = this.stories.sum(function(e) {
         return e.estimate || 0;
     });
@@ -109,25 +112,15 @@ PivotalIteration.prototype = {
         //         console.log(e);
         //     });
 
-        var today = new Date();
         var accepted = 0;
-        var progress = []
 
-        for (var date = self.start;
-             date <= today;
-             date.setDate(date.getDate() + 1)) {
+        return Object.keys(points).map(function(k) {
+            accepted += points[k].accepted;
 
-            try {
-                accepted += points[date.toDateString()].accepted;
-            } catch (e) {
-            }
-
-            progress.push({
-                date: date,
+            return {
+                date: new Date(k),
                 accepted: accepted
-            });
-        }
-
-        return progress;
+            };
+        });
     },
 }

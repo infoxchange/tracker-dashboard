@@ -15,10 +15,7 @@ pivotal.get_projects()
             .done(function(iteration) {
                 var progress = iteration.get_progress();
 
-                console.log(progress);
-
                 $('#burnup-graph').highcharts({
-                    chart: { type: 'area' },
                     title: { text: "Iteration Burnup" },
                     xAxis: {
                         type: 'datetime',
@@ -29,11 +26,19 @@ pivotal.get_projects()
                     },
                     series: [
                         {
+                            name: "Target",
+                            data: [
+                                [fix_date(iteration.start), 0],
+                                [fix_date(iteration.finish), iteration.total_points]
+                            ]
+                        },
+                        {
                             name: "Progress",
+                            type: 'area',
                             data: progress.map(function(e) {
-                                return [e.date, e.accepted];
+                                return [fix_date(e.date), e.accepted];
                             })
-                        }
+                        },
                     ]
                 });
             });
