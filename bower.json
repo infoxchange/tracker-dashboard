@@ -10,6 +10,7 @@
   ],
   "dependencies": {
     "bootstrap": "git://github.com/twbs/bootstrap.git#~3.0.0",
-    "handlebars": "git://github.com/components/handlebars.js.git#~1.0.0"
+    "handlebars": "git://github.com/components/handlebars.js.git#~1.0.0",
+    "highcharts": "3.0.7"
   }
 }
