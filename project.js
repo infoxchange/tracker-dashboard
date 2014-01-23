@@ -40,14 +40,19 @@ PivotalProject.prototype = {
         $.getJSON(build_url('/projects/{id}/stories', self),
                   {
                       filter: 'type:release',
-                      limit: 1
                   })
             .done(function(d) {
-                d = d[0];
+                /* sort the data by date */
+                d.forEach(function(e) {
+                    e.deadline = new Date(e.deadline);
+                })
+
+                /* take the first by date */
+                d = d.sort(by_key('deadline'))[0];
 
                 var release = {
                     name: d.name,
-                    scheduled: new Date(d.deadline)
+                    scheduled: d.deadline
                 };
 
                 defer.resolve(release);
