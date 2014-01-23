@@ -26,10 +26,17 @@ pivotal.get_projects()
                     },
                     series: [
                         {
-                            name: "Target",
+                            name: "Committed",
                             data: [
                                 [fix_date(iteration.start), 0],
                                 [fix_date(iteration.finish), iteration.total_points]
+                            ]
+                        },
+                        {
+                            name: "Target",
+                            data: [
+                                [fix_date(iteration.start), 0],
+                                [fix_date(iteration.finish), project.velocity]
                             ]
                         },
                         {
